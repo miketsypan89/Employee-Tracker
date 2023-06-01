@@ -31,9 +31,9 @@ function startApp() {
             if (answers.MainMenu == "Add An Employee") {
                 addAnEmployee()
             }
-            // if (answers.MainMenu == "Add A Department") {
-            //     ()
-            // }
+            if (answers.MainMenu == "Add A Department") {
+                addDepartment()
+            }
             // if (answers.MainMenu == "Add A Role") {
             //     ()
             // }
@@ -69,6 +69,22 @@ function viewDepartments() {
     )
 };
 
+function addDepartment() {
+    inquirer.prompt([{
+        type: "input",
+        name: "departmentName",
+        message: "What is the name of the new department?",
+    }]).then((answer) => {
+        connection.query(
+            `INSERT INTO department (name) VALUES ("${answer.departmentName}")`,
+            function (err, results, fields) {
+                console.table(results);
+                startApp()
+            }
+        )
+    })
+}
+
 function viewRoles() {
     connection.query(
         'SELECT * FROM role',
@@ -92,26 +108,63 @@ function addAnEmployee() {
             message: "What is the new employee's last name?",
         },
         {
-            type: "input",
+            type: "list",
             name: "role",
             message: "What is the new employee's role?",
+            choices: ["Dispatcher", "Accountant", "Safety_manager", "Shop_manager", "Warehouse_manager"]
         },
         {
-            type: "input",
+            type: "list",
             name: "manager",
-            message: "Who is the new employee's manager?",
+            message: "Who is the manager of this new employee?",
+            choices: ["Mike Tsypan", "Tony Simchuk", "Katie Kolomoytsev"]
         }
-    ]) .then((answers) => {
+    ]).then((answers) => {
         console.log(answers);
+        let roleId = 0
+        if (answers.role == "Dispatcher") {
+            roleId = 1
+        }
+        if (answers.role == "Accountant") {
+            roleId = 2
+        }
+        if (answers.role == "Safety_manager") {
+            roleId = 3
+        }
+        if (answers.role == "Shop_manager") {
+            roleId = 4
+        }
+        if (answers.role == "Warehouse_manager") {
+            roleId = 5
+        }
+
+        let managerId = 0
+        if (answers.manager == "Mike Tsypan") {
+            managerId = 1
+        }
+        if (answers.manager == "Tony Simchuk") {
+            managerId = 2
+        }
+        if (answers.manager == "Katie Kolomoytsev") {
+            managerd = 3
+        }
         connection.query(
-            `INSERT INTO employee (first_name, last_name, role_id, manager_id) VALUES ("${answers.firstName}", "${answers.lastName}", 1, null)`,
+            `INSERT INTO employee (first_name, last_name, role_id, manager_id) VALUES ("${answers.firstName}", "${answers.lastName}", "${roleId}", "${managerId}")`,
             function (err, results, fields) {
                 console.table(results);
                 startApp()
             }
         )
-      })
-    
+    })
+
 };
 
-startApp();
+//startApp();
+
+connection.query(
+    `INSERT INTO employee (first_name, last_name, role_id, manager_id) VALUES ("Artem", "Alek", 2, null)`,
+    function (err, results, fields) {
+        console.table(results);
+        startApp()
+    }
+)
