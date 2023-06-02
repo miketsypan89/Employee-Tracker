@@ -34,9 +34,9 @@ function startApp() {
             if (answers.MainMenu == "Add A Department") {
                 addDepartment()
             }
-            // if (answers.MainMenu == "Add A Role") {
-            //     ()
-            // }
+            if (answers.MainMenu == "Add A Role") {
+                addRole()
+            }
             // if (answers.MainMenu == "Update An Employee Role") {
             //     ()
             // }
@@ -83,7 +83,35 @@ function addDepartment() {
             }
         )
     })
-}
+};
+
+function addRole() {
+    inquirer.prompt([
+        {
+            type: "input",
+            name: "roleName",
+            message: "What is the name of the new role?",
+        },
+        {
+            type: "input",
+            name: "salary",
+            message: "What's the base salary in this role'?",
+        },
+        {
+            type: "list",
+            name: "department_id",
+            message: "What department does this role belong to?",
+        },
+    ]).then((answer) => {
+        connection.query(
+            `INSERT INTO role (title, salary, department_id) VALUES ("${answer.roleName}")`,
+            function (err, results, fields) {
+                console.table(results);
+                startApp()
+            }
+        )
+    })
+};
 
 function viewRoles() {
     connection.query(
