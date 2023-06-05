@@ -1,12 +1,10 @@
-DROP DATABASE IF EXISTS Employee_Tracker; 
+DROP DATABASE IF EXISTS Employee_Tracker;
 CREATE DATABASE Employee_Tracker;
 USE Employee_Tracker;
-
 CREATE TABLE department (
     id INT PRIMARY KEY AUTO_INCREMENT,
     name VARCHAR(30)
 );
-
 CREATE TABLE role (
     id INT PRIMARY KEY AUTO_INCREMENT,
     title VARCHAR(30),
@@ -14,7 +12,6 @@ CREATE TABLE role (
     department_id INT,
     FOREIGN KEY (department_id) REFERENCES department (id)
 );
-
 CREATE TABLE employee (
     id INT PRIMARY KEY AUTO_INCREMENT,
     first_name VARCHAR(30),
